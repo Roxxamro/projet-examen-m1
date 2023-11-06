@@ -7,16 +7,31 @@ const BooksPage: FC = (): ReactElement => {
   const { useListBooks } = useBooksProviders();
   const { books, load } = useListBooks();
 
-  useEffect(() => load, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   return (
     <>
       <h1>Books</h1>
       {books.map((book) => (
-        <div key={book.id}>{book.name}</div>
+        <div key={book.id}>
+          <h2>{book.name}</h2>
+          <p>
+            Genre:
+            {book.genres}
+          </p>
+          <p>
+            Date d'écriture:
+            {book.dateEcriture}
+          </p>
+          <p>
+            Auteur:
+            {book.auteur}
+          </p>
+        </div>
       ))}
     </>
   );
 };
-
 export default BooksPage;
