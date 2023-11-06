@@ -20,7 +20,25 @@ export default function RootLayout({
 }): ReactElement {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <nav>
+          <ul>
+            <li>
+              <Link href="/">Accueil</Link>
+            </li>
+            <li>
+            <Link href="/liste_livres">Liste des livres</Link>
+            </li>
+            <li>
+            <Link href="/liste_auteurs">Liste des auteurs</Link>
+            </li>
+            <li>
+            <Link href="/liste_utilisateurs">Liste des utilisateurs</Link>
+            </li>
+          </ul>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
