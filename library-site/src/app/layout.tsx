@@ -21,19 +21,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <nav>
-          <ul>
+        <nav className="bg-gray-800 p-4">
+          <ul className="flex justify-center space-x-10">
             <li>
-              <Link href="/">Accueil</Link>
+            <Link href="/">
+                <div className="text-white font-bold text-lg">Accueil</div>
+              </Link>
             </li>
             <li>
-            <Link href="/liste_livres">Liste des livres</Link>
+            <Link href="/books">
+                <div className="text-white font-bold text-lg">Liste des livres</div>
+              </Link>
             </li>
             <li>
-            <Link href="/liste_auteurs">Liste des auteurs</Link>
+            <Link href="/authors">
+                <div className="text-white font-bold text-lg">Liste des auteurs</div>
+              </Link>
             </li>
             <li>
-            <Link href="/liste_utilisateurs">Liste des utilisateurs</Link>
+            <Link href="/users">
+                <div className="text-white font-bold text-lg">Liste des utilisateurs</div>
+              </Link>
             </li>
           </ul>
         </nav>
