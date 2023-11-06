@@ -12,7 +12,7 @@ const BooksPage: FC = (): ReactElement => {
     load();
   }, []);
 
-  const filteredBooks = books.filter((book) => 
+  const filteredBooks = books.filter((book) =>
     book.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
