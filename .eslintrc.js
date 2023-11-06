@@ -10,7 +10,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'next/core-web-vitals',
-    'airbnb'
+    'airbnb',
   ],
   root: true,
   env: {
@@ -43,8 +43,8 @@ module.exports = {
         constructors: 'no-public',
         methods: 'explicit',
         properties: 'off',
-        parameterProperties: 'explicit'
-      }
-    }]
+        parameterProperties: 'explicit',
+      },
+    }],
   },
 };

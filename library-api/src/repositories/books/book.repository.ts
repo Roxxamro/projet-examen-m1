@@ -44,4 +44,20 @@ export class BookRepository extends Repository<Book> {
 
     return adaptBookEntityToBookModel(book);
   }
+
+  /**
+   * Get a book by its name
+   * @param name Book's name
+   * @returns Book if found
+   * @throws 404: book with this name was not found
+   */
+
+  public async getByName(name: string): Promise<BookRepositoryOutput> {
+    const book = await this.findOne({ where: { name } });
+
+    if (!book) {
+      throw new NotFoundError(`Book - '${name}'`);
+    }
+
+    return adaptBookEntityToBookModel(book);
 }
