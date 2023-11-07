@@ -13,9 +13,14 @@ export const useListBooks = (): UseListBooksProvider => {
   const fetchBooks = (): void => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/books`)
-      .then((data) => setBooks(data.data))
-      .catch((err) => console.error(err));
+      .then((response) => {
+        console.log(books);
+        console.log('Data from API:', response.data); // Ajoutez cette ligne pour afficher les données de l'API
+        setBooks(response.data);
+      })
+     .catch((err) => console.error(err));
   };
+  
 
   return { books, load: fetchBooks };
 };
