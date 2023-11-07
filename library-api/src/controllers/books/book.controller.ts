@@ -14,6 +14,8 @@ export class BookController {
   public async getAll(): Promise<PlainBookPresenter[]> {
     const books = await this.bookUseCases.getAllPlain();
 
+    console.log(books);
+
     return books.map(PlainBookPresenter.from);
   }
 

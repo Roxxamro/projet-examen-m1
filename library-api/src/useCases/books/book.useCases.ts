@@ -36,3 +36,4 @@ export class BookUseCases {
   public async getByName(name: string): Promise<BookUseCasesOutput> {
     return this.bookRepository.getByName(name);
 }
+}
