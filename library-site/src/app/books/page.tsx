@@ -2,6 +2,7 @@
 
 import { FC, ReactElement, useEffect, useState } from 'react';
 import { useBooksProviders } from '@/hooks';
+import './BooksPage.css';
 
 const BooksPage: FC = (): ReactElement => {
   const { useListBooks } = useBooksProviders();
@@ -17,14 +18,16 @@ const BooksPage: FC = (): ReactElement => {
   );
 
   return (
-    <>
-      <h1>Books</h1>
-      <input
-        type="text"
-        placeholder="Rechercher par titre..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+    <div className="header">
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Rechercher par titre..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <h1 className="title">Books</h1>
       {filteredBooks.map((book) => (
         <div key={book.id}>
           <h2>{book.name}</h2>
@@ -42,7 +45,7 @@ const BooksPage: FC = (): ReactElement => {
           </p>
         </div>
       ))}
-    </>
+    </div>
   );
 };
 
