@@ -60,5 +60,5 @@ export class BookRepository extends Repository<Book> {
     }
 
     return adaptBookEntityToBookModel(book);
-}
+  }
 }

@@ -27,12 +27,4 @@ export class BookUseCases {
   public async getById(id: BookId): Promise<BookUseCasesOutput> {
     return this.bookRepository.getById(id);
   }
-  /**
-   * Get a book by its name
-   * @param name Book's name
-   * @returns Book if found
-   * @throws 404: book with this name was not found
-   */
-  public async getByName(name: string): Promise<BookUseCasesOutput> {
-    return this.bookRepository.getByName(name);
 }
