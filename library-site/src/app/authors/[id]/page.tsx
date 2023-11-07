@@ -7,12 +7,32 @@ const AuthorDetailsPage: FC = () => {
   const { id } = useParams();
 
   return (
-    <>
-      Author details &apos;
-      {id}
-      &apos; not implemented
-    </>
+    <div className="flex flex-col justify-between h-screen">
+      <h1 className="text-2xl font-bold my-4">Author details &apos;ID&apos; NOT IMPLEMENTED</h1>
+      <div className="flex justify-center">
+      <button
+          onClick={() => { /* Fonction à exécuter lors du clic sur l'image en tant que bouton */ }}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded mb-40"
+        >
+          MODIFIER
+        </button>
+      </div>
+    </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default AuthorDetailsPage;
