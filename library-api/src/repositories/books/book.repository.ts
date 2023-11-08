@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { NotFoundError } from 'library-api/src/common/errors';
-import { Book, BookId } from 'library-api/src/entities';
+import {
+  Book,
+  BookGenre,
+  BookId,
+  Genre,
+  Author,
+} from 'library-api/src/entities';
+import { GenreModel } from 'library-api/src/models';
 import {
   BookRepositoryOutput,
   PlainBookRepositoryOutput,
+  CreateBookRepositoryInput,
 } from 'library-api/src/repositories/books/book.repository.type';
 import {
   adaptBookEntityToBookModel,
   adaptBookEntityToPlainBookModel,
 } from 'library-api/src/repositories/books/book.utils';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, Repository, In } from 'typeorm';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class BookRepository extends Repository<Book> {
@@ -23,7 +32,7 @@ export class BookRepository extends Repository<Book> {
    */
   public async getAllPlain(): Promise<PlainBookRepositoryOutput[]> {
     const books = await this.find({
-      relations: { bookGenres: { genre: true } },
+      relations: { bookGenres: { genre: true }, author: true },
     });
 
     return books.map(adaptBookEntityToPlainBookModel);
@@ -36,7 +45,10 @@ export class BookRepository extends Repository<Book> {
    * @throws 404: book with this ID was not found
    */
   public async getById(id: BookId): Promise<BookRepositoryOutput> {
-    const book = await this.findOne({ where: { id } });
+    const book = await this.findOne({
+      where: { id },
+      relations: { bookGenres: { genre: true }, author: true },
+    });
 
     if (!book) {
       throw new NotFoundError(`Book - '${id}'`);
@@ -46,19 +58,65 @@ export class BookRepository extends Repository<Book> {
   }
 
   /**
-   * Get a book by its name
-   * @param name Book's name
-   * @returns Book if found
-   * @throws 404: book with this name was not found
+   * Create a new Book
+   * @param input Data to create the book
+   * @returns Created author
    */
+  public async createBook(
+    input: CreateBookRepositoryInput,
+  ): Promise<BookRepositoryOutput> {
+    const id = await this.dataSource.transaction(async (manager) => {
+      const [newBook] = await manager.save<Book>(
+        manager.create<Book>(Book, [
+          {
+            ...input,
+            id: v4(),
+            bookGenres: undefined,
+            author: undefined,
+          },
+        ]),
+      );
+      function getgenreid(genre: GenreModel): string {
+        return genre.id;
+      }
+      if (input.genres) {
+        await manager.delete<BookGenre>(BookGenre, {
+          book: { id: newBook.id },
+        });
+        const newGenres = await manager.find<Genre>(Genre, {
+          where: {
+            id: In(input.genres.map((genres) => getgenreid(genres))),
+          },
+        });
 
-  public async getByName(name: string): Promise<BookRepositoryOutput> {
-    const book = await this.findOne({ where: { name } });
+        await manager.save<BookGenre>(
+          newGenres.map((genre) =>
+            manager.create<BookGenre>(BookGenre, {
+              id: v4(),
+              book: { id: newBook.id },
+              genre,
+            }),
+          ),
+        );
+      }
+      if (input.author) {
+        const author = await manager.findOne<Author>(Author, {
+          where: { lastName: input.author.lastName },
+        });
 
-    if (!book) {
-      throw new NotFoundError(`Book - '${name}'`);
-    }
+        newBook.author = author;
+        await manager.save<Book>(newBook);
+      }
+      return newBook.id;
+    });
+    return this.getById(id);
+  }
 
-    return adaptBookEntityToBookModel(book);
+  /**
+   * Delete a book from database
+   * @param id Book's id
+   */
+  public async deletebyid(id: BookId): Promise<void> {
+    await this.delete(id);
   }
 }
