@@ -6,7 +6,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
   } from 'typeorm';
-  import { Post } from './Post'; // Import the relevant relationships or other necessary imports
+  import { Book } from './Book'; // Import the relevant relationships or other necessary imports
   
   export type UserId = string & { __brand: 'User' };
   
@@ -23,8 +23,4 @@ import {
   
     @Column()
     password: string;
-  
-    @OneToMany(() => Post, (post) => post.user)
-    posts: Post[]; // Assuming a one-to-many relationship with the Post entity
   }
-  

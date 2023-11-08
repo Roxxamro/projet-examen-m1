@@ -18,7 +18,7 @@ export class GenreController {
     type: GenrePresenter,
   })
   public async getAll(): Promise<GenrePresenter[]> {
-    const result = await this.genreUseCases.getAll();
+    const result = await this.genreUseCases.getAllPlain();
 
     return result.map(GenrePresenter.from);
   }

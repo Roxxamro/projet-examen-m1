@@ -6,7 +6,7 @@ import {
   PlainAuthorRepositoryOutput,
   CreateAuthorRepositoryInput,
 } from 'library-api/src/repositories/authors/author.repository.type';
-import { adaptAuthorEntityToPlainAuthorModel } from 'library-api/src/repositories/books/book.utils';
+import { adaptAuthorEntityToPlainAuthorModel } from 'library-api/src/repositories/authors/author.utils';
 import { DataSource, Repository, In } from 'typeorm';
 import { v4 } from 'uuid';
 
