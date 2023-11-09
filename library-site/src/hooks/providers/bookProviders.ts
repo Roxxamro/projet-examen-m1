@@ -1,11 +1,18 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { PlainBookModel } from '@/models';
+import { PlainBookModel, Sort } from '@/models';
 
 type UseListBooksProvider = {
   books: PlainBookModel[];
-  load: () => void;
+  
+  sort: Sort;
 };
+
+type ListBooksInput = {
+  search?: string;
+  Genre?: BookGenre[];
+  sort?: BookSort;
+
 
 export const useListBooks = (): UseListBooksProvider => {
   const [books, setBooks] = useState<PlainBookModel[]>([]);
@@ -14,11 +21,10 @@ export const useListBooks = (): UseListBooksProvider => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/books`)
       .then((response) => {
-        console.log(books);
-        console.log('Data from API:', response.data); // Ajoutez cette ligne pour afficher les données de l'API
-        setBooks(response.data);
+        const books = 
+
       })
-     .catch((err) => console.error(err));
+      .catch((err) => console.error(err));
   };
   
 
