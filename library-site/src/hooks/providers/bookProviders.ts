@@ -2,17 +2,17 @@ import axios from 'axios';
 import { useState } from 'react';
 import { PlainBookModel, Sort } from '@/models';
 
+
 type UseListBooksProvider = {
   books: PlainBookModel[];
-  
-  sort: Sort;
+  load: () => void;
 };
 
 type ListBooksInput = {
   search?: string;
   Genre?: BookGenre[];
-  sort?: BookSort;
-
+  sort?: Sort;
+}
 
 export const useListBooks = (): UseListBooksProvider => {
   const [books, setBooks] = useState<PlainBookModel[]>([]);
