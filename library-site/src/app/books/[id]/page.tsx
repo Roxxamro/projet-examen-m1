@@ -1,18 +1,29 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useBookIdProviders } from '@/hooks/providers/bookIdProviders';
 
-const BooksDetailsPage: FC = () => {
-  const { id } = useParams();
+const BookPage: FC = () => {
+  const { useBookId } = useBookIdProviders();
+  const { book, load } = useBookId();
+
+  useEffect(() => {
+      load(); 
+  }, []);
 
   return (
     <>
-      Books details &apos;
-      {id}
-      &apos; not implemented
+      <h1>Page de détails du livre</h1>
+      {book.title && (
+        <div>
+          <h2>{book.name}</h2>
+          <p>Auteur : {book.authorId}</p>
+          <p>Date : {book.writtenOn}</p>
+          {/* Ajoutez d'autres informations sur le livre ici */}
+        </div>
+      )}
     </>
   );
 };
 
-export default BooksDetailsPage;
+export default BookPage;
