@@ -2,6 +2,10 @@
 
 import React, { FC, useEffect, useState } from 'react';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
+import { useAddAuthor } from '@/hooks/providersAdd/authorAddProviders';
+
+
+
 const handleAuthorClick = (id: string) => {
   window.location.href = `/authors/${id}`;
 }
@@ -9,6 +13,7 @@ const handleAuthorClick = (id: string) => {
 const AuthorsPage: FC = () => {
   const { useListAuthors } = useAuthorsProviders();
   const { authors, load } = useListAuthors();
+  const addAuthor = useAddAuthor;
 
   useEffect(() => {
     load();
@@ -36,6 +41,15 @@ const AuthorsPage: FC = () => {
     (searchLivreCount === '' || auteur.count === searchLivreCount)
     */
   );
+
+  const handleAddClick = async () => {
+    try {
+      await addAuthor();
+      window.location.href = '/authors';
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>

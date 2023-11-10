@@ -1,13 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/router'; // Importez le hook useRouter
+
 import { FC, useEffect,useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuthorIdProviders } from '@/hooks/providers/authorIdProviders';
 import { useDeleteAuthor } from '@/hooks/providersDelete/authorDeleteProviders'
 
 const AuthorDetailsPage: FC = () => { 
-  const router = useRouter(); // Initialisez le hook useRouter
   const { useAuthorId } = useAuthorIdProviders();
   const { author, load, update} = useAuthorId();
   const { id } = useParams();
@@ -36,7 +35,7 @@ const AuthorDetailsPage: FC = () => {
   const handleDeleteClick = async () => {
     try {
       await deleteAuthor(id);
-      router.push('/authors');
+      window.location.href = '/authors';
     } catch (error) {
       console.error(error);
     }
@@ -92,6 +91,12 @@ const AuthorDetailsPage: FC = () => {
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded mb-4"
               >
                 MODIFIER
+              </button>
+              <button
+                onClick={handleDeleteClick}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-20 rounded"
+              >
+                SUPPRIMER
               </button>
             </>
           )}
