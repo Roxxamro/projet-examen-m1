@@ -3,7 +3,7 @@ import { FC, ReactElement } from 'react';
 const Home: FC = (): ReactElement => (
   <main
     className="flex min-h-screen flex-col items-start justify-start p-24"
-    style={{ backgroundImage: 'url("/images/image-bibliothèque.jpg")', backgroundSize: 'cover' }}
+    style={{ backgroundImage: 'url("/images/image-bibliothèque2.jpg")', backgroundSize: 'cover' }}
   >
     <h1 className="text-4xl font-bold mt-2 text-white">Bienvenue dans notre Bibliothèque en Ligne</h1>
     <p className="text-xl mt-4 text-white">Découvrez notre vaste collection de livres et explorez les œuvres des auteurs les plus renommés.
