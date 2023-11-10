@@ -1,9 +1,13 @@
 'use client';
+
+import { useRouter } from 'next/router'; // Importez le hook useRouter
 import { FC, useEffect,useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuthorIdProviders } from '@/hooks/providers/authorIdProviders';
+import { useDeleteAuthor } from '@/hooks/providersDelete/authorDeleteProviders'
 
 const AuthorDetailsPage: FC = () => { 
+  const router = useRouter(); // Initialisez le hook useRouter
   const { useAuthorId } = useAuthorIdProviders();
   const { author, load, update} = useAuthorId();
   const { id } = useParams();
@@ -11,6 +15,7 @@ const AuthorDetailsPage: FC = () => {
   const [newFirstName, setNewFirstName] = useState('');
   const [newLastName, setNewLastName] = useState('');
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  const deleteAuthor = useDeleteAuthor;
 
   useEffect(() => {
     load(id);
@@ -18,7 +23,6 @@ const AuthorDetailsPage: FC = () => {
 
   const handleEditClick = () => {
     setIsEditing(true);
-    // Pré-remplir les champs avec les valeurs actuelles
     setNewFirstName(author?.firstName || '');
     setNewLastName(author?.lastName || '');
     setNewPhotoUrl(author?.photoUrl || '');
@@ -27,6 +31,15 @@ const AuthorDetailsPage: FC = () => {
     // Coté Back-end, on ne peut pas modifier les infos de l'auteur
     update( {id, firstName: newFirstName, lastName: newLastName, photoUrl: newPhotoUrl });
     setIsEditing(false);
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      await deleteAuthor(id);
+      router.push('/authors');
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 
