@@ -16,6 +16,7 @@ const BookPage: FC = () => {
 
   return (
     <>
+    
       <h1>Page de détails du livre</h1>
       {book.name && (
         <div>

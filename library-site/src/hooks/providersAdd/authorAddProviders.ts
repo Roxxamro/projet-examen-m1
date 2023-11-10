@@ -1,4 +1,21 @@
 import axios from 'axios';
+<<<<<<< HEAD
+
+export const useAddAuthor = async (author: any): Promise<void> => {
+
+    try {
+
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/authors`, author);
+        window.location.href = '/authors';
+
+    } catch (err) {
+
+        console.error(err);
+        throw err;
+
+    }
+
+=======
 import { CreateAuthorModel } from '@/models';
  
 type CreateAuthorProvider = {
@@ -28,4 +45,5 @@ export const useAddAuthor = async (
  
     throw err;
   }
+>>>>>>> b75f61c79ca326905281265058ae3bebc4d38082
 }
