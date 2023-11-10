@@ -1,14 +1,12 @@
-'use client';
+'use client'
 
 import React, { FC, useEffect, useState } from 'react';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useAddAuthor } from '@/hooks/providersAdd/authorAddProviders';
 
-
-
 const handleAuthorClick = (id: string) => {
   window.location.href = `/authors/${id}`;
-}
+};
 
 const AuthorsPage: FC = () => {
   const { useListAuthors } = useAuthorsProviders();
@@ -20,32 +18,23 @@ const AuthorsPage: FC = () => {
   }, []);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchLivreCount, setSearchLivreCount] = useState<number | ''>('');
+  const [newFirstName, setNewFirstName] = useState('');
+  const [newLastName, setNewLastName] = useState('');
+  const [newPhotoUrl, setNewPhotoUrl] = useState('');
 
   const handleSearchName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleSearchLivreCount = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchLivreCount(value === '' ? '' : parseInt(value, 10));
-  };
-
- const filteredAuthors = authors.filter((auteur) =>
-    (searchTerm === '' || 
-    auteur.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    auteur.lastName.toLowerCase().includes(searchTerm.toLowerCase()))
-
-    /* Cette ligne ne fonctionne pas car on ne récupére pas les livres de l'auteur
-    &&
-    (searchLivreCount === '' || auteur.count === searchLivreCount)
-    */
-  );
-
   const handleAddClick = async () => {
     try {
-      await addAuthor();
-      window.location.href = '/authors';
+      await addAuthor({
+        firstName: newFirstName,
+        lastName: newLastName,
+        photoUrl: newPhotoUrl,
+      });
+      // Rechargez la liste des auteurs après l'ajout
+      load();
     } catch (error) {
       console.error(error);
     }
@@ -62,35 +51,66 @@ const AuthorsPage: FC = () => {
           onChange={handleSearchName}
           className="px-2 py-1 text-black border rounded-md"
         />
-        
-        {/* <input
-          type="number"
-          placeholder="Rechercher par nombre de livres"
-          value={searchLivreCount === '' ? '' : searchLivreCount.toString()}
-          onChange={handleSearchLivreCount}
-          className="px-2 py-1 text-black border rounded-md ml-4"
-        /> */}
-        
+      </div>
+      <div className="flex justify-center mb-4">
+        <form className="flex items-center">
+          <input
+            type="text"
+            placeholder="Nouveau prénom"
+            value={newFirstName}
+            onChange={(e) => setNewFirstName(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mr-2"
+          />
+          <input
+            type="text"
+            placeholder="Nouveau nom"
+            value={newLastName}
+            onChange={(e) => setNewLastName(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mr-2"
+          />
+          <input
+            type="text"
+            placeholder="Nouvelle URL de photo"
+            value={newPhotoUrl}
+            onChange={(e) => setNewPhotoUrl(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mr-2"
+          />
+          <button
+            type="button"
+            onClick={handleAddClick}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Ajouter
+          </button>
+        </form>
       </div>
       <div className="flex flex-wrap justify-center">
-        {filteredAuthors.map((auteur) => (
-          <div key={auteur.id} className="m-4 text-center">
-            <button
-              onClick={() => { handleAuthorClick(auteur.id); }}
-              className="rounded-lg overflow-hidden focus:outline-none"
-            >
-              <img
-                src={auteur.photoUrl}
-                alt={`${auteur.firstName} ${auteur.lastName}`}
-                className="w-24 h-24 object-cover"
-              />
-            </button>
-            <p className="mt-2">{auteur.firstName} - {auteur.lastName}</p>
-          </div>
-        ))}
+        {authors
+          .filter(
+            (auteur) =>
+              searchTerm === '' ||
+              auteur.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              auteur.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((auteur) => (
+            <div key={auteur.id} className="m-4 text-center">
+              <button
+                onClick={() => handleAuthorClick(auteur.id)}
+                className="rounded-lg overflow-hidden focus:outline-none"
+              >
+                <img
+                  src={auteur.photoUrl}
+                  alt={`${auteur.firstName} ${auteur.lastName}`}
+                  className="w-24 h-24 object-cover"
+                />
+              </button>
+              <p className="mt-2">{auteur.firstName} - {auteur.lastName}</p>
+            </div>
+          ))}
       </div>
     </>
   );
 };
 
 export default AuthorsPage;
+
