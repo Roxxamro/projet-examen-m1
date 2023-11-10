@@ -63,9 +63,8 @@ Les différentes options sont expliquées ci-dessous:
 - Auteurs: la liste des auteurs apparaît et un bouton "Ajouter un auteur" se trouve en haut à droite. Si ce bouton est cliqué, une modale apparaît demandant diverses informations afin d'ajouter un auteur dans la base de données.
 Si on souhaite trouver un auteur particulier, une barre de recherche a été implémentée pour cette exacte fonction.
 
-- Livres: la liste des livres apparaît et un bouton "Ajouter un livre" se trouve en haut à droite. Si ce bouton est cliqué, une modale apparaît demandant diverses informations afin d'ajouter un livre dans la base de données.
-On peut trier les livres par ordre alphabétique selon leur titre, le nom et le prénom de leur auteur.
-On peut filtrer les livres selon leur nom grâce à une barre de recherche et selon leur genre grâce à un menu défilant - pour confirmer son choix, on doit cliquer sur le bouton "filtrer".
+- Livres: 
+On peut filtrer les livres selon leur nom grâce à une barre de recherche 
 
 - Utilisateurs: la liste des utilisateurs apparaît et un bouton "Ajouter un utilisateur" se trouve en haut à droite. Si ce bouton est cliqué, une modale apparaît demandant diverses informations afin d'ajouter un utilisateur dans la base de données.
 On peut filtrer les utilisateurs selon leur nom grâce à une barre de recherche.
