@@ -1,6 +1,7 @@
 'use client'
 
 import React, { FC, useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
 import { useAddAuthor } from '@/hooks/providersAdd/authorAddProviders';
 
@@ -21,23 +22,32 @@ const AuthorsPage: FC = () => {
   const [newFirstName, setNewFirstName] = useState('');
   const [newLastName, setNewLastName] = useState('');
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearchName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const handleAddClick = async () => {
+  const handleAddClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleAddAuthor = async () => {
     try {
       await addAuthor({
         firstName: newFirstName,
         lastName: newLastName,
         photoUrl: newPhotoUrl,
       });
-      // Rechargez la liste des auteurs après l'ajout
+      setIsModalOpen(false);
       load();
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -53,36 +63,12 @@ const AuthorsPage: FC = () => {
         />
       </div>
       <div className="flex justify-center mb-4">
-        <form className="flex items-center">
-          <input
-            type="text"
-            placeholder="Nouveau prénom"
-            value={newFirstName}
-            onChange={(e) => setNewFirstName(e.target.value)}
-            className="px-2 py-1 text-black border rounded-md mr-2"
-          />
-          <input
-            type="text"
-            placeholder="Nouveau nom"
-            value={newLastName}
-            onChange={(e) => setNewLastName(e.target.value)}
-            className="px-2 py-1 text-black border rounded-md mr-2"
-          />
-          <input
-            type="text"
-            placeholder="Nouvelle URL de photo"
-            value={newPhotoUrl}
-            onChange={(e) => setNewPhotoUrl(e.target.value)}
-            className="px-2 py-1 text-black border rounded-md mr-2"
-          />
-          <button
-            type="button"
-            onClick={handleAddClick}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Ajouter
-          </button>
-        </form>
+        <button
+          onClick={handleAddClick}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Ajouter
+        </button>
       </div>
       <div className="flex flex-wrap justify-center">
         {authors
@@ -108,9 +94,57 @@ const AuthorsPage: FC = () => {
             </div>
           ))}
       </div>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleModalClose}
+        contentLabel="Ajouter un auteur"
+      >
+        <h2>Ajouter un auteur</h2>
+        <form>
+          {/* Ajoutez le formulaire d'ajout d'auteur ici */}
+          <input
+            type="text"
+            placeholder="Nouveau prénom"
+            value={newFirstName}
+            onChange={(e) => setNewFirstName(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Nouveau nom"
+            value={newLastName}
+            onChange={(e) => setNewLastName(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mb-2"
+          />
+          <input
+            type="text"
+            placeholder="Nouvelle URL de photo"
+            value={newPhotoUrl}
+            onChange={(e) => setNewPhotoUrl(e.target.value)}
+            className="px-2 py-1 text-black border rounded-md mb-2"
+          />
+          <button
+            type="button"
+            onClick={handleAddAuthor}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Ajouter
+          </button>
+          <button
+            type="button"
+            onClick={handleModalClose}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded ml-2"
+          >
+            Annuler
+          </button>
+        </form>
+      </Modal>
     </>
   );
 };
 
 export default AuthorsPage;
+
+
 
