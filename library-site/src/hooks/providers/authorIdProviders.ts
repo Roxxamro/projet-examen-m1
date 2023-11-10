@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { PlainAuthorModel } from '@/models';
+import { AuthorModel } from '@/models';
 
 type UseAuthorIdProvider = {
-    author: PlainAuthorModel;
+    author: AuthorModel;
     load: (id: string) => void;
 };
 
 export const useAuthorId = (): UseAuthorIdProvider => {
-    const [author, setAuthor] = useState<PlainAuthorModel>({} as PlainAuthorModel);
+    const [author, setAuthor] = useState<AuthorModel>({} as AuthorModel);
 
     const fetchAuthor = (id: string): void => {
         axios
