@@ -15,6 +15,7 @@ const AuthorDetailsPage: FC = () => {
   const [newLastName, setNewLastName] = useState('');
   const [newPhotoUrl, setNewPhotoUrl] = useState('');
   const deleteAuthor = useDeleteAuthor;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     load(id);
@@ -32,15 +33,28 @@ const AuthorDetailsPage: FC = () => {
     setIsEditing(false);
   };
 
-  const handleDeleteClick = async () => {
+  const handleDeleteClick = () => {
+    // Ouvrir la modale de confirmation
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
     try {
+      // Fermer la modale de confirmation
+      setIsModalOpen(false);
+      // Effectuer la suppression
       await deleteAuthor(id);
+      // Rediriger vers la liste des auteurs après la suppression
       window.location.href = '/authors';
     } catch (error) {
       console.error(error);
     }
   };
 
+  const handleCancelDelete = () => {
+    // Fermer la modale de confirmation
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
@@ -98,6 +112,27 @@ const AuthorDetailsPage: FC = () => {
               >
                 SUPPRIMER
               </button>
+              {isModalOpen && (
+                <div className="fixed inset-0 flex items-center justify-center">
+                  <div className="bg-white text-black p-4 rounded-md">
+                    <p>Êtes-vous sûr de vouloir supprimer cet auteur?</p>
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        onClick={handleCancelDelete}
+                        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        onClick={handleConfirmDelete}
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Confirmer
+                      </button>
+                      </div>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
