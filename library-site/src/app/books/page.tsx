@@ -2,7 +2,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { useBookIdProviders } from '@/hooks';
+import { useBooksProviders } from '@/hooks';
 
 
 const BooksPage: React.FC = () => {
