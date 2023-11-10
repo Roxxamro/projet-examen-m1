@@ -2,6 +2,9 @@
 
 import React, { FC, useEffect, useState } from 'react';
 import { useAuthorsProviders } from '@/hooks/providers/authorProviders';
+const handleAuthorClick = (id: string) => {
+  window.location.href = `/authors/${id}`;
+}
 
 const AuthorsPage: FC = () => {
   const { useListAuthors } = useAuthorsProviders();
@@ -23,9 +26,15 @@ const AuthorsPage: FC = () => {
     setSearchLivreCount(value === '' ? '' : parseInt(value, 10));
   };
 
-  const filteredAuthors = authors.filter((auteur) => 
-    (searchTerm === '' || auteur.firstName.toLowerCase().includes(searchTerm.toLowerCase())) &&
-    (searchLivreCount === '' || auteur.lastName === searchLivreCount)
+ const filteredAuthors = authors.filter((auteur) =>
+    (searchTerm === '' || 
+    auteur.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    auteur.lastName.toLowerCase().includes(searchTerm.toLowerCase()))
+
+    /* Cette ligne ne fonctionne pas car on ne récupére pas les livres de l'auteur
+    &&
+    (searchLivreCount === '' || auteur.count === searchLivreCount)
+    */
   );
 
   return (
@@ -39,19 +48,21 @@ const AuthorsPage: FC = () => {
           onChange={handleSearchName}
           className="px-2 py-1 text-black border rounded-md"
         />
-        <input
+        
+        {/* <input
           type="number"
           placeholder="Rechercher par nombre de livres"
           value={searchLivreCount === '' ? '' : searchLivreCount.toString()}
           onChange={handleSearchLivreCount}
           className="px-2 py-1 text-black border rounded-md ml-4"
-        />
+        /> */}
+        
       </div>
       <div className="flex flex-wrap justify-center">
         {filteredAuthors.map((auteur) => (
           <div key={auteur.id} className="m-4 text-center">
             <button
-              onClick={() => { /* Fonction à exécuter lors du clic sur l'image en tant que bouton */ }}
+              onClick={() => { handleAuthorClick(auteur.id); }}
               className="rounded-lg overflow-hidden focus:outline-none"
             >
               <img
